@@ -1,0 +1,29 @@
+# ============================================================
+# railway.toml — Railway deployment configuration
+#
+# Docs: https://docs.railway.com/reference/config-as-code
+# ============================================================
+
+[build]
+# Railway will auto-detect the Dockerfile present in the repo.
+# Keep NIXPACKS as a fallback if you prefer Railway's buildpacks.
+builder = "NIXPACKS"
+
+[deploy]
+# ✅ Start command — Railway inject PORT tự động
+startCommand = "streamlit run app.py --server.port $PORT --server.address 0.0.0.0"
+
+# Health check — Railway restart nếu fail
+# Streamlit serves the UI at `/`, use that for healthchecks.
+healthcheckPath = "/"
+healthcheckTimeout = 60
+
+# Tự động restart khi crash
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# ============================================================
+# Environment variables đặt qua Railway Dashboard hoặc CLI:
+#   railway variables set OPENAI_API_KEY=sk-...
+#   railway variables set ENVIRONMENT=production
+# ============================================================
